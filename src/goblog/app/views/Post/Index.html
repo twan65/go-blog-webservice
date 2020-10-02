@@ -1,0 +1,25 @@
+{{set . "title" "All Posts"}}
+{{template "header.html" .}}
+  
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Created at</th>
+            <th>Updated at</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .posts}}
+            <tr>
+                <th scope="row">{{.Id}}</th>
+                <td>{{.Title}}</td>
+                <td><time>{{.CreatedAt}}</time></td>
+                <td><time>{{.UpdatedAt}}</time></td>
+            </tr>
+        {{end}}
+    </tbody>
+</table>
+  
+{{template "footer.html" .}}

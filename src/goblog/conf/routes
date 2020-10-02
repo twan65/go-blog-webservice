@@ -7,10 +7,20 @@ module:testrunner
 # module:jobs
 
 
-GET     /                                       Home.Index
+GET     /                      Home.Index
+ 
+## Post
+GET     /posts                 Post.Index
+ 
+## Ignore favicon requests
+GET     /favicon.ico           404
+ 
+## Map static resources from the /app/public folder to the /public path
+GET     /public/*filepath      Static.Serve("public")
+ 
+## Catch all
+*       /:controller/:action   :controller.:action
 
-# Ignore favicon requests
-GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath                       Static.Serve("public")
