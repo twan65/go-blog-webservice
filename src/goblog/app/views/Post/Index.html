@@ -15,8 +15,8 @@
             <tr>
                 <th scope="row">{{.Id}}</th>
                 <td>{{.Title}}</td>
-                <td><time>{{.CreatedAt}}</time></td>
-                <td><time>{{.UpdatedAt}}</time></td>
+                <td><time>{{formatDate .CreatedAt}}</time></td>
+                <td><time>{{formatDate .UpdatedAt}}</time></td>
             </tr>
         {{end}}
     </tbody>

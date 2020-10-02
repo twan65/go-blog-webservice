@@ -1,6 +1,8 @@
 package app
 
 import (
+	"time"
+
 	"github.com/revel/revel"
 )
 
@@ -36,6 +38,12 @@ func init() {
 	// revel.OnAppStart(ExampleStartupScript)
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
+
+	// 日付フォーマット指定
+	revel.TemplateFuncs["formatDate"] = func(date time.Time) string {
+		return date.Format("2006/01/02 03:04")
+	}
+
 }
 
 // HeaderFilter adds common security headers
