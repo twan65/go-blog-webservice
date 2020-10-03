@@ -32,3 +32,9 @@ func (c Post) Index() revel.Result {
 	// これでレンダリングするとビューでposts変数にアクセスができる。
 	return c.Render(posts)
 }
+
+// Empty Postを生成して画面にレンダリング
+func (c Post) New() revel.Result {
+	post := models.Post{}
+	return c.Render(post)
+}
