@@ -5,22 +5,26 @@
     {{$post := .post}}
     {{with $field := field "title" .}}
         <div>
-            <label for="title">Title</label>
+            <label for="title">タイトル</label>
             <input type="text" id="title" name="{{$field.Name}}" placeholder="タイトルを入力してください" value="{{if $field.Flash}}{{$field.Flash}}{{else}}{{$post.Title}}{{end}}"/>
         </div>
     {{end}}
   
     {{with $field := field "body" .}}
         <div>
-            <label for="title">Body</label>
+            <label for="title">内容</label>
             <textarea id="body" name="{{$field.Name}}">
-                {{if $field.Flash}}{{$field.Flash}}{{else}}{{$post.Body}}{{end}}
+                {{if $field.Flash}}
+                    {{$field.Flash}}
+                {{else}}
+                    {{$post.Body}}
+                {{end}}
             </textarea>
         </div>
     {{end}}
-    <button type="submit">Create Post</button>
+    <button type="submit">作成</button>
 </form>
   
-<a href="{{url "Post.Index"}}">Back</a>
+<a href="{{url "Post.Index"}}">戻る</a>
   
 {{template "footer.html" .}}
