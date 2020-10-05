@@ -12,6 +12,7 @@ GET     /                      Home.Index
 ## Post
 GET     /posts                 Post.Index
 GET     /posts/new             Post.New
+POST    /posts                 Post.Create
  
 ## Ignore favicon requests
 GET     /favicon.ico           404
