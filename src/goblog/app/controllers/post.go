@@ -2,6 +2,8 @@
 package controllers
 
 import (
+	"database/sql"
+	"fmt"
 	"goblog/app/models"
 	"goblog/app/routes"
 	"time"
@@ -54,4 +56,28 @@ func (c Post) Create(title, body string) revel.Result {
 	c.Flash.Success("ポスト作成を完了")
 
 	return c.Redirect(routes.Post.Index())
+}
+
+// ポスト取得
+func (c Post) Show(id int) revel.Result {
+	post, err := getPost(c.Txn, id)
+	if err != nil {
+		panic(err)
+	}
+
+	return c.Render(post)
+}
+
+func getPost(txn *sql.Tx, id int) (models.Post, error) {
+	post := models.Post{}
+	err := txn.QueryRow("select id, title, body, created_at, updated_at from posts where id=?", id).
+		Scan(&post.Id, &post.Title, &post.Body, &post.CreatedAt, &post.UpdatedAt)
+
+	switch {
+	case err == sql.ErrNoRows:
+		return post, fmt.Errorf("No post with that ID - %d.", id)
+	case err != nil:
+		return post, err
+	}
+	return post, nil
 }
