@@ -3,6 +3,8 @@ package controllers
 
 import (
 	"goblog/app/models"
+	"goblog/app/routes"
+	"time"
 
 	db "github.com/revel/modules/db/app"
 	"github.com/revel/revel"
@@ -37,4 +39,19 @@ func (c Post) Index() revel.Result {
 func (c Post) New() revel.Result {
 	post := models.Post{}
 	return c.Render(post)
+}
+
+// ポストをDBに保存
+func (c Post) Create(title, body string) revel.Result {
+	// add Database
+	_, err := c.Txn.Exec("insert into posts(title, body, created_at, updated_at) values(?,?,?,?)", title, body, time.Now(), time.Now())
+
+	if err != nil {
+		panic(err)
+	}
+
+	// ViewにFlashメッセージを渡す。
+	c.Flash.Success("ポスト作成を完了")
+
+	return c.Redirect(routes.Post.Index())
 }
