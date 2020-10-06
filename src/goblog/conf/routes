@@ -10,10 +10,10 @@ module:testrunner
 GET     /                      Home.Index
  
 ## Post
-GET     /posts                 Post.Index
-GET     /posts/new             Post.New
-GET  　 /posts/:id       　　　 Post.Show
-POST    /posts                 Post.Create
+GET     /posts                                  Post.Index
+GET     /posts/new                              Post.New
+POST    /posts                                  Post.Create
+GET     /posts/:id                              Post.Show
  
 ## Ignore favicon requests
 GET     /favicon.ico           404
