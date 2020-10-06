@@ -1,0 +1,27 @@
+{{set . "title" "Edit Post"}}
+{{template "header.html" .}}
+ 
+<form method="POST" action="{{url "Post.Update" .post.Id}}">
+    {{$post := .post}}
+    {{with $field := field "title" .}}
+        <div>
+            <label for="title">タイトル</label>
+            <input type="text" id="title" name="{{$field.Name}}" placeholder="Enter title" value="{{if $field.Flash}}{{$field.Flash}}{{else}}{{$post.Title}}{{end}}"/>
+        </div>
+    {{end}}
+ 
+    {{with $field := field "body" .}}
+        <div>
+            <label for="title">内容</label>
+            <textarea id="body" name="{{$field.Name}}">
+                {{if $field.Flash}}{{$field.Flash}}{{else}}{{$post.Body}}{{end}}
+            </textarea>
+        </div>
+    {{end}}
+    <button type="submit">変更</button>
+</form>
+ 
+<a href="{{url "Post.Show" .post.Id}}">Show</a>
+<a href="{{url "Post.Index"}}">戻る</a>
+ 
+{{template "footer.html" .}}

@@ -18,6 +18,7 @@
                 <td><time>{{formatDate .CreatedAt}}</time></td>
                 <td><time>{{formatDate .UpdatedAt}}</time></td>
                 <td><a href="{{url "Post.Show" .Id}}">Show</a></td>
+                <td><a href="{{url "Post.Edit" .Id}}">Edit</a></td>
             </tr>
         {{end}}
     </tbody>

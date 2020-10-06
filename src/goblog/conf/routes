@@ -14,6 +14,10 @@ GET     /posts                                  Post.Index
 GET     /posts/new                              Post.New
 POST    /posts                                  Post.Create
 GET     /posts/:id                              Post.Show
+GET     /posts/:id/edit                         Post.Edit
+PUT     /posts/:id                              Post.Update
+POST    /posts/:id                              Post.Update
+
  
 ## Ignore favicon requests
 GET     /favicon.ico           404

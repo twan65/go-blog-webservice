@@ -68,7 +68,7 @@ func (c Post) Show(id int) revel.Result {
 	return c.Render(post)
 }
 
-// ポスト更新
+// ポスト更新データ取得
 func (c Post) Edit(id int) revel.Result {
 	post, err := getPost(c.Txn, id)
 	if err != nil {
@@ -76,6 +76,19 @@ func (c Post) Edit(id int) revel.Result {
 	}
 
 	return c.Render(post)
+}
+
+func (c Post) Update(id int, title, body string) revel.Result {
+	// ポスト内容を更新
+	if _, err := c.Txn.Exec("update posts set title=?, body=?, updated_at=? where id=?", title, body, time.Now(), id); err != nil {
+		panic(err)
+	}
+
+	// ビューにFlashメッセージを渡す。
+	c.Flash.Success("更新完了")
+
+	// ポスト詳細画面に遷移
+	return c.Redirect(routes.Post.Show(id))
 }
 
 func getPost(txn *sql.Tx, id int) (models.Post, error) {
