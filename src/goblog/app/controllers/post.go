@@ -68,6 +68,16 @@ func (c Post) Show(id int) revel.Result {
 	return c.Render(post)
 }
 
+// ポスト更新
+func (c Post) Edit(id int) revel.Result {
+	post, err := getPost(c.Txn, id)
+	if err != nil {
+		panic(err)
+	}
+
+	return c.Render(post)
+}
+
 func getPost(txn *sql.Tx, id int) (models.Post, error) {
 	post := models.Post{}
 	err := txn.QueryRow("select id, title, body, created_at, updated_at from posts where id=?", id).
