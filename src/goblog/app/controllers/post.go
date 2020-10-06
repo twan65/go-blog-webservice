@@ -91,6 +91,18 @@ func (c Post) Update(id int, title, body string) revel.Result {
 	return c.Redirect(routes.Post.Show(id))
 }
 
+// ポスト削除
+func (c Post) Delete(id int) revel.Result {
+
+	if _, err := c.Txn.Exec("delete from posts where id=?", id); err != nil {
+		panic(err)
+	}
+
+	c.Flash.Success("削除完了")
+
+	return c.Redirect(routes.Post.Index())
+}
+
 func getPost(txn *sql.Tx, id int) (models.Post, error) {
 	post := models.Post{}
 	err := txn.QueryRow("select id, title, body, created_at, updated_at from posts where id=?", id).

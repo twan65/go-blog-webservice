@@ -17,6 +17,8 @@ GET     /posts/:id                              Post.Show
 GET     /posts/:id/edit                         Post.Edit
 PUT     /posts/:id                              Post.Update
 POST    /posts/:id                              Post.Update
+GET     /posts/:id/delete                       Post.Delete
+DELETE  /posts/:id                              Post.Delete
 
  
 ## Ignore favicon requests
