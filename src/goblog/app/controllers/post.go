@@ -110,9 +110,30 @@ func getPost(txn *sql.Tx, id int) (models.Post, error) {
 
 	switch {
 	case err == sql.ErrNoRows:
-		return post, fmt.Errorf("No post with that ID - %d.", id)
+		return post, fmt.Errorf("ポストが存在しません - %d.", id)
 	case err != nil:
 		return post, err
 	}
+
+	// コメント取得
+	post.Comments = getComments(txn, id)
+
 	return post, nil
+}
+
+// ポストのコメントを取得
+func getComments(txn *sql.Tx, postId int) (comments []models.Comment) {
+	rows, err := txn.Query("select id, body, commenter, post_id, created_at, updated_at from comments where post_id=? order by created_at desc", postId)
+	if err != nil {
+		panic(err)
+	}
+
+	for rows.Next() {
+		comment := models.Comment{}
+		if err := rows.Scan(&comment.Id, &comment.Body, &comment.Commenter, &comment.PostId, &comment.CreatedAt, &comment.UpdatedAt); err != nil {
+			panic(err)
+		}
+		comments = append(comments, comment)
+	}
+	return
 }
