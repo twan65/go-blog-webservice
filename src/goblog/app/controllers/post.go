@@ -2,36 +2,20 @@
 package controllers
 
 import (
-	"database/sql"
-	"fmt"
 	"goblog/app/models"
 	"goblog/app/routes"
-	"time"
 
-	db "github.com/revel/modules/db/app"
 	"github.com/revel/revel"
 )
 
 type Post struct {
-	*revel.Controller
-	db.Transactional
+	GormController
 }
 
 // 全てのポストを取得
 func (c Post) Index() revel.Result {
 	var posts []models.Post
-	rows, err := c.Txn.Query("select id, title, body, created_at, updated_at from posts order by created_at desc")
-	if err != nil {
-		panic(err)
-	}
-
-	for rows.Next() {
-		post := models.Post{}
-		if err := rows.Scan(&post.Id, &post.Title, &post.Body, &post.CreatedAt, &post.UpdatedAt); err != nil {
-			panic(err)
-		}
-		posts = append(posts, post)
-	}
+	c.Txn.Order("created_at desc").Find(&posts)
 
 	// これでレンダリングするとビューでposts変数にアクセスができる。
 	return c.Render(posts)
@@ -43,14 +27,20 @@ func (c Post) New() revel.Result {
 	return c.Render(post)
 }
 
+// ポスト取得
+func (c Post) Show(id int) revel.Result {
+	var post models.Post
+	c.Txn.First(&post, id)
+	c.Txn.Where(&models.Comment{PostId: id}).Find(&post.Comments)
+
+	return c.Render(post)
+}
+
 // ポストをDBに保存
 func (c Post) Create(title, body string) revel.Result {
 	// add Database
-	_, err := c.Txn.Exec("insert into posts(title, body, created_at, updated_at) values(?,?,?,?)", title, body, time.Now(), time.Now())
-
-	if err != nil {
-		panic(err)
-	}
+	post := models.Post{Title: title, Body: body}
+	c.Txn.Create(&post)
 
 	// ViewにFlashメッセージを渡す。
 	c.Flash.Success("ポスト作成を完了")
@@ -58,31 +48,25 @@ func (c Post) Create(title, body string) revel.Result {
 	return c.Redirect(routes.Post.Index())
 }
 
-// ポスト取得
-func (c Post) Show(id int) revel.Result {
-	post, err := getPost(c.Txn, id)
-	if err != nil {
-		panic(err)
-	}
-
-	return c.Render(post)
-}
-
 // ポスト更新データ取得
 func (c Post) Edit(id int) revel.Result {
-	post, err := getPost(c.Txn, id)
-	if err != nil {
-		panic(err)
-	}
+	var post models.Post
+	c.Txn.First(&post, id)
 
 	return c.Render(post)
+
 }
 
 func (c Post) Update(id int, title, body string) revel.Result {
+
+	var post models.Post
+	// 更新データを取得
+	c.Txn.First(&post, id)
+	post.Title = title
+	post.Body = body
+
 	// ポスト内容を更新
-	if _, err := c.Txn.Exec("update posts set title=?, body=?, updated_at=? where id=?", title, body, time.Now(), id); err != nil {
-		panic(err)
-	}
+	c.Txn.Save(&post)
 
 	// ビューにFlashメッセージを渡す。
 	c.Flash.Success("更新完了")
@@ -94,46 +78,10 @@ func (c Post) Update(id int, title, body string) revel.Result {
 // ポスト削除
 func (c Post) Delete(id int) revel.Result {
 
-	if _, err := c.Txn.Exec("delete from posts where id=?", id); err != nil {
-		panic(err)
-	}
+	c.Txn.Where("post_id = ?", id).Delete(&models.Comment{})
+	c.Txn.Where("id = ?", id).Delete(&models.Post{})
 
 	c.Flash.Success("削除完了")
 
 	return c.Redirect(routes.Post.Index())
-}
-
-func getPost(txn *sql.Tx, id int) (models.Post, error) {
-	post := models.Post{}
-	err := txn.QueryRow("select id, title, body, created_at, updated_at from posts where id=?", id).
-		Scan(&post.Id, &post.Title, &post.Body, &post.CreatedAt, &post.UpdatedAt)
-
-	switch {
-	case err == sql.ErrNoRows:
-		return post, fmt.Errorf("ポストが存在しません - %d.", id)
-	case err != nil:
-		return post, err
-	}
-
-	// コメント取得
-	post.Comments = getComments(txn, id)
-
-	return post, nil
-}
-
-// ポストのコメントを取得
-func getComments(txn *sql.Tx, postId int) (comments []models.Comment) {
-	rows, err := txn.Query("select id, body, commenter, post_id, created_at, updated_at from comments where post_id=? order by created_at desc", postId)
-	if err != nil {
-		panic(err)
-	}
-
-	for rows.Next() {
-		comment := models.Comment{}
-		if err := rows.Scan(&comment.Id, &comment.Body, &comment.Commenter, &comment.PostId, &comment.CreatedAt, &comment.UpdatedAt); err != nil {
-			panic(err)
-		}
-		comments = append(comments, comment)
-	}
-	return
 }
