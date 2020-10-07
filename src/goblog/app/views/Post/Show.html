@@ -12,6 +12,7 @@
 </p>
 
 <h4>Comments: </h4>
+{{$post := .post}}
 {{range .post.Comments}}
     <p>
         <mark>
@@ -21,6 +22,7 @@
         <small>
             ({{formatDate .CreatedAt}})
         </small>
+        <a href="{{url "Comment.Delete" $post.Id .Id}}">削除</a>
     </p>
 {{end}}
   

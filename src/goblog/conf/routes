@@ -22,6 +22,8 @@ DELETE  /posts/:id                              Post.Delete
 
 ## Comment
 POST    /posts/:postId/comments                 Comment.Create
+GET     /posts/:postId/comments/:id/delete      Comment.Delete
+DELETE  /posts/:postId/comments/:id             Comment.Delete
 
  
 ## Ignore favicon requests
