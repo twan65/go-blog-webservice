@@ -10,7 +10,38 @@
     <b>Body: </b>
     {{ .post.Body}}
 </p>
- 
+
+<h4>Comments: </h4>
+{{range .post.Comments}}
+    <p>
+        <mark>
+            <b>{{.Commenter}}:</b>
+        </mark>
+        {{.Body}}
+        <small>
+            ({{formatDate .CreatedAt}})
+        </small>
+    </p>
+{{end}}
+  
+<h4>コメント作成:</h4>
+<form method="POST" action="{{url "Comment.Create" .post.Id}}">
+    <div>
+        {{with $field := field "commenter" .}}
+            <label for="commenter">名前</label>
+            <input type="text" id="commenter" name="{{$field.Name}}" placeholder="作成者"/>
+        {{end}}
+    </div>
+    <div>
+        {{with $field := field "body" .}}
+            <label for="body">コメント</label>
+            <input type="text" id="body" name="{{$field.Name}}" placeholder="コメント"/>
+        {{end}}
+    </div>
+    <button type="submit">作成</button>
+</form>
+  
+<a href="{{url "Post.Edit" .post.Id}}">変更</a>
 <a href="{{url "Post.Index" }}">戻る</a>
  
 {{template "footer.html" .}}
