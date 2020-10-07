@@ -20,6 +20,9 @@ POST    /posts/:id                              Post.Update
 GET     /posts/:id/delete                       Post.Delete
 DELETE  /posts/:id                              Post.Delete
 
+## Comment
+POST    /posts/:postId/comments                 Comment.Create
+
  
 ## Ignore favicon requests
 GET     /favicon.ico           404
