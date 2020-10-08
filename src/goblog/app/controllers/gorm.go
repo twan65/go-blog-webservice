@@ -46,7 +46,7 @@ func InitDB() {
 
 // テーブル生成
 func migrate() {
-	db.AutoMigrate(&models.Post{}, &models.Comment{})
+	db.AutoMigrate(&models.Post{}, &models.Comment{}, &models.User{})
 }
 
 // トランザクション設定
