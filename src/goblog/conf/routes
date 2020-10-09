@@ -25,6 +25,11 @@ POST    /posts/:postId/comments                 Comment.Create
 GET     /posts/:postId/comments/:id/delete      Comment.Delete
 DELETE  /posts/:postId/comments/:id             Comment.Delete
 
+## App
+GET     /login                                  App.Login
+POST    /login                                  App.CreateSession
+GET     /logout                                 App.DestroySession
+DELETE  /logout                                 App.DestroySession
  
 ## Ignore favicon requests
 GET     /favicon.ico           404
