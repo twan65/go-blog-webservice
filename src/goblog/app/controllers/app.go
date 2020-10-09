@@ -9,6 +9,7 @@ import (
 
 type App struct {
 	GormController
+	CurrentUser *models.User
 }
 
 func (c App) Login() revel.Result {
@@ -49,4 +50,37 @@ func (c App) DestroySession() revel.Result {
 		delete(c.Session, k)
 	}
 	return c.Redirect(Home.Index)
+}
+
+func (c *App) setCurrentUser() revel.Result {
+	// 画面でcurrentUserを使用できるようにRenderArgsにCurrentUserを追加
+	defer func() {
+		if c.CurrentUser != nil {
+			c.ViewArgs["currentUser"] = c.CurrentUser
+		} else {
+			delete(c.ViewArgs, "currentUser")
+		}
+	}()
+
+	// セッションからusernameとauthKeyを取得
+	username, ok := c.Session["username"].(string)
+	if !ok || username == "" {
+		return nil
+	}
+
+	authKey, ok := c.Session["authKey"].(string)
+	if !ok || authKey == "" {
+		return nil
+	}
+
+	// revel.Verify関数でauthKeyが有効なのかを確認
+	// authKeyが有効の場合、usernameでユーザーを取得してコントローラーにCurrentUserを保存
+	if match := revel.Verify(username, authKey); match {
+		var user models.User
+		c.Txn.Where(&models.User{Username: username}).First(&user)
+		if &user != nil {
+			c.CurrentUser = &user
+		}
+	}
+	return nil
 }

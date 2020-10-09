@@ -35,4 +35,7 @@ func init() {
 	revel.InterceptMethod((*GormController).Begin, revel.BEFORE)
 	revel.InterceptMethod((*GormController).Commit, revel.AFTER)
 	revel.InterceptMethod((*GormController).Rollback, revel.FINALLY)
+
+	// 全てのアクションに対してsetCurrentUser関数が行われるように設定
+	revel.InterceptMethod((*App).setCurrentUser, revel.BEFORE)
 }
