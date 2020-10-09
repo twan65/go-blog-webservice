@@ -5,10 +5,19 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/revel/revel"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
 	db *gorm.DB
+)
+
+// 管理者Defalut
+const (
+	DefaultName,
+	DefaultRole,
+	DefaultUsername,
+	DefaultPassword = "Admin", "admin", "admin", "admin"
 )
 
 // GormController定義
@@ -47,6 +56,13 @@ func InitDB() {
 // テーブル生成
 func migrate() {
 	db.AutoMigrate(&models.Post{}, &models.Comment{}, &models.User{})
+
+	// TODO：配布時にはアカウントとパスワード変更は必要
+	// 管理者アカウントを生成（Defalut）
+	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte(DefaultPassword), bcrypt.DefaultCost)
+	db.Where(models.User{Name: DefaultName, Role: DefaultRole, Username: DefaultUsername}).
+		Attrs(models.User{Password: string(bcryptPassword)}).
+		FirstOrCreate(&models.User{})
 }
 
 // トランザクション設定
