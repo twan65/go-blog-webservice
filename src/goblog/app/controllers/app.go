@@ -38,10 +38,11 @@ func (c App) CreateSession(username, password string) revel.Result {
 		delete(c.Session, k)
 	}
 	c.Flash.Out["username"] = username
-	c.Flash.Error("Login failed")
+	c.Flash.Error("ログインに失敗しました。")
 	return c.Redirect(Home.Index)
 }
 
+// ログアウト処理
 func (c App) DestroySession() revel.Result {
 	// clear session
 	for k := range c.Session {
