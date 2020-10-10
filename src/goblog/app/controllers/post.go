@@ -9,7 +9,31 @@ import (
 )
 
 type Post struct {
-	GormController
+	App
+}
+
+// CurrentUserの権限確認
+func (c Post) CheckUser() revel.Result {
+	// IndexとShowは権限を確認しない
+	switch c.MethodName {
+	case "Index", "Show":
+		return nil
+	}
+
+	// CurrentUser情報がなければログイン画面に遷移
+	if c.CurrentUser == nil {
+		c.Flash.Error("ログインしてください。")
+		return c.Redirect(App.Login)
+	}
+
+	// CurrentUserが管理者ではなければログイン画面に遷移
+	if c.CurrentUser.Role != "admin" {
+		c.Response.Status = 401 // Unauthorized
+		c.Flash.Error("管理者ではありません。")
+		return c.Redirect(App.Login)
+	}
+
+	return nil
 }
 
 // 全てのポストを取得
