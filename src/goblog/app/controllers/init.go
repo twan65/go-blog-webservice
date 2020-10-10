@@ -13,4 +13,8 @@ func init() {
 
 	// 全てのアクションに対してsetCurrentUser関数が行われるように設定
 	revel.InterceptMethod((*App).setCurrentUser, revel.BEFORE)
+
+	// checkUserをインタセプターとして登録
+	revel.InterceptMethod(Post.CheckUser, revel.BEFORE)
+	revel.InterceptMethod(Comment.CheckUser, revel.BEFORE)
 }
