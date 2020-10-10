@@ -4,10 +4,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>#</th>
-            <th>タイトル</th>
-            <th>作成日</th>
-            <th>更新日</th>
+            <th scope="col">#</th>
+            <th scope="col">タイトル</th>
+            <th scope="col">作成日</th>
+            <th scope="col">更新日</th>
         </tr>
     </thead>
     <tbody>
@@ -24,5 +24,5 @@
         {{end}}
     </tbody>
 </table>
-<a href="{{url "Post.New" }}">ポスト作成</a>
+<a href="{{url "Post.New" }}" class="btn btn-primary" role="button">ポスト作成</a>
 {{template "footer.html" .}}

@@ -22,9 +22,9 @@
             </textarea>
         </div>
     {{end}}
-    <button type="submit">作成</button>
+    <button type="submit" class="btn btn-primary">作成</button>
 </form>
   
-<a href="{{url "Post.Index"}}">戻る</a>
+<a href="{{url "Post.Index"}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">戻る</a>
   
 {{template "footer.html" .}}

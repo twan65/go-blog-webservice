@@ -21,7 +21,7 @@
     <button type="submit">変更</button>
 </form>
  
-<a href="{{url "Post.Show" .post.Id}}">Show</a>
-<a href="{{url "Post.Index" }}">戻る</a>
+<a href="{{url "Post.Show" .post.Id}}" class="btn btn-primary" role="button">Show</a>
+<a href="{{url "Post.Index" }}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">戻る</a>
  
 {{template "footer.html" .}}
