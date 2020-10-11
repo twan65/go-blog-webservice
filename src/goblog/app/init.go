@@ -1,6 +1,7 @@
 package app
 
 import (
+	"goblog/app/models"
 	"time"
 
 	"github.com/revel/revel"
@@ -42,6 +43,12 @@ func init() {
 	// 日付フォーマット指定
 	revel.TemplateFuncs["formatDate"] = func(date time.Time) string {
 		return date.Format("2006/01/02 03:04")
+	}
+
+	// ユーザー権限確認
+	// ビューで「isAdmin」を利用して権限を確認できる
+	revel.TemplateFuncs["isAdmin"] = func(currentUser *models.User) bool {
+		return currentUser != nil && currentUser.Role == "admin"
 	}
 
 }
