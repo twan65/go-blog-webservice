@@ -67,13 +67,13 @@ func migrate() {
 
 // トランザクション設定
 // Begin a transaction
-func (c GormController) Begin() revel.Result {
+func (c *GormController) Begin() revel.Result {
 	c.Txn = db.Begin()
 	return nil
 }
 
 // Rollback if it’s still going (must have panicked).
-func (c GormController) Rollback() revel.Result {
+func (c *GormController) Rollback() revel.Result {
 	if c.Txn != nil {
 		c.Txn.Rollback()
 		c.Txn = nil
