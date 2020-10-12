@@ -26,7 +26,7 @@
         {{end}}
     </tbody>
 </table>
-{if isAdmin $currentUser }}
+{{if isAdmin $currentUser }}
     <a href="{{url "Post.New" }}" class="btn btn-primary" role="button">ポスト作成</a>
 {{end}}
 {{template "footer.html" .}}
