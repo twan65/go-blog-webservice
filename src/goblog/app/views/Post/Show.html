@@ -28,7 +28,7 @@
         {{end}}
     </p>
 {{end}}
-{{if isAdmin .currentUser }}
+{{if isAdmin .currentUser}}
 <h4>コメント作成:</h4>
 <form method="POST" action="{{url "Comment.Create" .post.Id}}">
     <div>
@@ -46,7 +46,7 @@
     <button type="submit">作成</button>
 </form>
 {{end}}
-{{if isAdmin .currentUser }}
+{{if isAdmin .currentUser}}
     <a href="{{url "Post.Edit" .post.Id}}" class="btn btn-primary" role="button">変更</a>
 {{end}}
 <a href="{{url "Post.Index" }}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">戻る</a>

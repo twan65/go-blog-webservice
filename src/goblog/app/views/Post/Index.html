@@ -18,7 +18,7 @@
                 <td><time>{{formatDate .CreatedAt}}</time></td>
                 <td><time>{{formatDate .UpdatedAt}}</time></td>
                 <td><a href="{{url "Post.Show" .Id}}">Show</a></td>
-                {{if isAdmin $currentUser }}
+                {{if isAdmin $currentUser}}
                     <td><a href="{{url "Post.Edit" .Id}}">Edit</a></td>
                     <td><a href="{{url "Post.Delete" .Id}}">Delete</a></td>
                 {{end}}
@@ -26,7 +26,7 @@
         {{end}}
     </tbody>
 </table>
-{{if isAdmin $currentUser }}
+{{if isAdmin $currentUser}}
     <a href="{{url "Post.New" }}" class="btn btn-primary" role="button">ポスト作成</a>
 {{end}}
 {{template "footer.html" .}}
