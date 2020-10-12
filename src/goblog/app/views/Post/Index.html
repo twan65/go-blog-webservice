@@ -1,6 +1,6 @@
 {{set . "title" "All Posts"}}
 {{template "header.html" .}}
-  
+{{$currentUser := .currentUser}}
 <table class="table">
     <thead>
         <tr>
@@ -18,11 +18,15 @@
                 <td><time>{{formatDate .CreatedAt}}</time></td>
                 <td><time>{{formatDate .UpdatedAt}}</time></td>
                 <td><a href="{{url "Post.Show" .Id}}">Show</a></td>
-                <td><a href="{{url "Post.Edit" .Id}}">Edit</a></td>
-                <td><a href="{{url "Post.Delete" .Id}}">Delete</a></td>
+                {{if isAdmin $currentUser }}
+                    <td><a href="{{url "Post.Edit" .Id}}">Edit</a></td>
+                    <td><a href="{{url "Post.Delete" .Id}}">Delete</a></td>
+                {{end}}
             </tr>
         {{end}}
     </tbody>
 </table>
-<a href="{{url "Post.New" }}" class="btn btn-primary" role="button">ポスト作成</a>
+{if isAdmin $currentUser }}
+    <a href="{{url "Post.New" }}" class="btn btn-primary" role="button">ポスト作成</a>
+{{end}}
 {{template "footer.html" .}}
