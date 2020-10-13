@@ -33,6 +33,7 @@ DELETE  /logout                                 App.DestroySession
 
 ## Comment
 GET    /user/adduser              User.AddUser
+POST   /user                      User.CreateUser
  
 ## Ignore favicon requests
 GET     /favicon.ico           404
