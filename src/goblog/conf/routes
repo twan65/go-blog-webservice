@@ -30,6 +30,9 @@ GET     /login                                  App.Login
 POST    /login                                  App.CreateSession
 GET     /logout                                 App.DestroySession
 DELETE  /logout                                 App.DestroySession
+
+## Comment
+GET    /user/adduser              User.AddUser
  
 ## Ignore favicon requests
 GET     /favicon.ico           404
