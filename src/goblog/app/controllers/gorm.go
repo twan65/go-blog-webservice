@@ -17,7 +17,7 @@ const (
 	DefaultName,
 	DefaultRole,
 	DefaultUsername,
-	DefaultPassword = "Admin", "admin", "admin", "admin"
+	DefaultPassword = "Admin", "1", "admin", "admin"
 )
 
 // GormController定義

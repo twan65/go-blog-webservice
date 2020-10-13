@@ -48,7 +48,7 @@ func init() {
 	// ユーザー権限確認
 	// ビューで「isAdmin」を利用して権限を確認できる
 	revel.TemplateFuncs["isAdmin"] = func(currentUser *models.User) bool {
-		return currentUser != nil && currentUser.Role == "admin"
+		return currentUser != nil && currentUser.Role == "1"
 	}
 
 }

@@ -27,7 +27,7 @@ func (c Post) CheckUser() revel.Result {
 	}
 
 	// CurrentUserが管理者ではなければログイン画面に遷移
-	if c.CurrentUser.Role != "admin" {
+	if c.CurrentUser.Role != "1" {
 		c.Response.Status = 401 // Unauthorized
 		c.Flash.Error("管理者ではありません。")
 		return c.Redirect(App.Login)
