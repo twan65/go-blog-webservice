@@ -17,4 +17,6 @@ func init() {
 	// checkUserをインタセプターとして登録
 	revel.InterceptMethod(Post.CheckUser, revel.BEFORE)
 	revel.InterceptMethod(Comment.CheckUser, revel.BEFORE)
+
+	// TODO:ユーザー情報更新は該当ユーザーのみとする。
 }
