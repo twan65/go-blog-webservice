@@ -93,7 +93,7 @@ func (c Post) Update(id int, title, body string) revel.Result {
 	c.Txn.Save(&post)
 
 	// ビューにFlashメッセージを渡す。
-	c.Flash.Success("更新完了")
+	c.Flash.Success("ポスト更新完了")
 
 	// ポスト詳細画面に遷移
 	return c.Redirect(routes.Post.Show(id))
