@@ -3,6 +3,7 @@ package controllers
 
 import (
 	"goblog/app/models"
+	"goblog/app/routes"
 
 	"github.com/revel/revel"
 )
@@ -31,4 +32,31 @@ func (c User) CreateUser(name, username, password string) revel.Result {
 	c.Session["username"] = user.Username
 	c.Flash.Success("Welcome, " + user.Name)
 	return c.Redirect(Post.Index)
+}
+
+// ユーザー更新データ取得
+func (c User) EditUser(id int) revel.Result {
+	var user models.User
+	c.Txn.First(&user, id)
+
+	return c.Render(user)
+
+}
+
+func (c User) UpdateUser(id int, name, password string) revel.Result {
+
+	var user models.User
+	// 更新データを取得
+	c.Txn.First(&user, id)
+	user.Name = name
+	user.Password = password
+
+	// ポスト内容を更新
+	c.Txn.Save(&user)
+
+	// ビューにFlashメッセージを渡す。
+	c.Flash.Success("ユーザー情報更新完了")
+
+	// ポスト詳細画面に遷移
+	return c.Redirect(routes.Post.Index())
 }
