@@ -16,5 +16,8 @@
     </head>
     <body>
         <div class="container">
-
+            {{$currentUser := .currentUser}}
+            {{if isAdmin $currentUser}}
+                <a href="{{url "Post.Edit" .Id}}">ユーザー情報変更</a>
+            {{end}}
     {{template "flash.html" .}}

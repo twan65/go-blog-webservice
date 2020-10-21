@@ -12,6 +12,39 @@ type User struct {
 	App
 }
 
+// CurrentUserの権限確認
+func (c User) CheckUser() revel.Result {
+	// IndexとShowは権限を確認しない
+	switch c.MethodName {
+	case "Index", "Show", "AddUser":
+		return nil
+	}
+
+	// CurrentUser情報がなければログイン画面に遷移
+	if c.CurrentUser == nil {
+		c.Flash.Error("ログインしてください。")
+		return c.Redirect(App.Login)
+	}
+
+	// CurrentUserが管理者ではなければログイン画面に遷移
+	if c.CurrentUser.Role != "1" {
+		c.Response.Status = 401 // Unauthorized
+		c.Flash.Error("管理者ではありません。")
+		return c.Redirect(App.Login)
+	}
+
+	return nil
+}
+
+// 全てのユーザーを取得
+func (c User) Index() revel.Result {
+	var users []models.User
+	c.Txn.Order("created_at desc").Find(&users)
+
+	// これでレンダリングするとビューでusers変数にアクセスができる。
+	return c.Render(users)
+}
+
 func (c User) AddUser() revel.Result {
 	user := models.User{}
 	return c.Render(user)

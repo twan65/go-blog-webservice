@@ -18,5 +18,7 @@ func init() {
 	revel.InterceptMethod(Post.CheckUser, revel.BEFORE)
 	revel.InterceptMethod(Comment.CheckUser, revel.BEFORE)
 
+	revel.InterceptMethod(User.CheckUser, revel.BEFORE)
+
 	// TODO:ユーザー情報更新は該当ユーザーのみとする。
 }
